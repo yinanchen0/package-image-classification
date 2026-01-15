@@ -25,11 +25,11 @@ conditions in delivery systems using camera images captured at the pickup stage.
   
 - **Damaged Package** – visible damage on the package
   
-![Defective package example](example-image/defect.jpg)
+  ![Defective package example](example-image/defect.jpg)
   
 - **Multiple Items Picked** – more than one item is picked unintentionally
   
-![Defective package example](example-image/multi-pick.jpg)
+  ![Defective package example](example-image/multi-pick.jpg)
   
 ---
 
@@ -75,4 +75,55 @@ data/
 └── multiple/
 
 3. Run `src/main.m`
+## Model Architecture and Comparison
+
+### Self-Built CNN Structure
+A lightweight custom convolutional neural network was designed and trained from scratch
+to match the delivery pickup classification task. The network follows a simple and
+efficient structure:
+
+- Input layer: RGB images resized to 224 × 224
+- Convolutional layers with ReLU activation for feature extraction
+- Max pooling layers for spatial downsampling
+- Fully connected layer for classification
+- Softmax output layer for multi-class prediction
+
+This architecture prioritizes **simplicity, faster training**, and **reduced risk of
+overfitting** on a limited dataset.
+
+---
+
+### Model Comparison and Advantages
+
+**1. Transfer Learning (Pretrained CNN + XGBoost)**
+- Uses pretrained CNNs to extract high-level visual features
+- Achieves the **highest classification accuracy**
+- Performs well with limited training data
+- Suitable when accuracy is the primary objective
+
+**Advantages:**
+- Strong feature representation
+- Faster convergence
+- Better generalization
+
+---
+
+**2. Self-Built CNN**
+- Trained end-to-end on the delivery pickup dataset
+- Lightweight and task-specific
+- Easier to modify and deploy
+
+**Advantages:**
+- Lower computational cost
+- Faster training
+- Greater architectural flexibility
+- More suitable for embedded or edge deployment
+
+---
+
+### Summary
+Transfer learning provides superior performance when computational resources are
+available, while the self-built CNN offers a balanced solution for **real-time delivery
+systems** where efficiency and simplicity are critical.
+
 
