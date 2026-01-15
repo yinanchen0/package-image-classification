@@ -16,6 +16,9 @@ conditions in delivery systems using camera images captured at the pickup stage.
 ---
 
 ## Classification Categories
+> Note: Some images in the dataset may be blurred due to motion or capture conditions.  
+> The example images shown below are randomly selected.
+
 - **Normal Pickup** – a single, undamaged item is correctly picked
   
   ![Defective package example](example-image/normal.jpg)
@@ -42,3 +45,21 @@ conditions in delivery systems using camera images captured at the pickup stage.
 ---
 
 ## Code Structure
+src/
+├── main.m # Entry point for training and evaluation
+├── extractFeatures.m # CNN-based feature extraction
+├── trainXGBoost.m # XGBoost classifier training
+├── trainCNN.m # Custom CNN training
+├── evaluateModel.m # Model evaluation and metrics
+└── utils/
+├── preprocessImage.m # Image preprocessing utilities
+└── splitDataset.m # Dataset splitting
+
+## How to Run
+1. Organize the dataset as follows:
+data/
+├── normal/
+├── damaged/
+└── multiple/
+2. Run `src/main.m`
+
