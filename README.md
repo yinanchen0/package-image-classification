@@ -46,20 +46,33 @@ conditions in delivery systems using camera images captured at the pickup stage.
 
 ## Code Structure
 src/
+
 ├── main.m # Entry point for training and evaluation
+
 ├── extractFeatures.m # CNN-based feature extraction
+
 ├── trainXGBoost.m # XGBoost classifier training
+
 ├── trainCNN.m # Custom CNN training
+
 ├── evaluateModel.m # Model evaluation and metrics
+
 └── utils/
+
 ├── preprocessImage.m # Image preprocessing utilities
+
 └── splitDataset.m # Dataset splitting
 
 ## How to Run
 1. Organize the dataset as follows:
+
 data/
+
 ├── normal/
+
 ├── damaged/
+
 └── multiple/
-2. Run `src/main.m`
+
+3. Run `src/main.m`
 
