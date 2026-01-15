@@ -18,13 +18,16 @@ conditions in delivery systems using camera images captured at the pickup stage.
 ## Classification Categories
 - **Normal Pickup** – a single, undamaged item is correctly picked
   
-- **Damaged Package** – visible damage on the package
-
-- 
-- **Multiple Items Picked** – more than one item is picked unintentionally
-
+  ![Defective package example](example-image/normal.jpg)
   
-
+- **Damaged Package** – visible damage on the package
+  
+![Defective package example](example-image/defect.jpg)
+  
+- **Multiple Items Picked** – more than one item is picked unintentionally
+  
+![Defective package example](example-image/multi-pick.jpg)
+  
 ---
 
 ## Approach
