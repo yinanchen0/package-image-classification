@@ -75,55 +75,62 @@ data/
 └── multiple/
 
 3. Run `src/main.m`
+
+---
+
 ## Model Architecture and Comparison
 
 ### Self-Built CNN Structure
-A lightweight custom convolutional neural network was designed and trained from scratch
-to match the delivery pickup classification task. The network follows a simple and
-efficient structure:
 
-- Input layer: RGB images resized to 224 × 224
-- Convolutional layers with ReLU activation for feature extraction
-- Max pooling layers for spatial downsampling
-- Fully connected layer for classification
-- Softmax output layer for multi-class prediction
+A lightweight custom convolutional neural network was designed and trained from scratch to match the delivery pickup classification task. The network adopts a simple and efficient architecture:
 
-This architecture prioritizes **simplicity, faster training**, and **reduced risk of
-overfitting** on a limited dataset.
+* **Input layer:** RGB images resized to 224 × 224
+* **Convolutional layers:** ReLU activation for feature extraction
+* **Max pooling layers:** spatial downsampling
+* **Fully connected layer:** classification
+* **Softmax output layer:** multi-class prediction
+
+This architecture prioritizes **simplicity**, **faster training**, and a **reduced risk of overfitting** when working with a limited dataset.
+
+**Classification accuracy:** approximately **75–76%**
 
 ---
 
 ### Model Comparison and Advantages
 
-**1. Transfer Learning (Pretrained CNN + XGBoost)**
-- Uses pretrained CNNs to extract high-level visual features
-- Achieves the **highest classification accuracy**
-- Performs well with limited training data
-- Suitable when accuracy is the primary objective
+#### Transfer Learning (Pretrained CNN + XGBoost)
+
+Pretrained convolutional neural networks are used to extract high-level visual features, which are then classified using an XGBoost-based model.
+
+* Achieves the **highest classification accuracy**
+* Performs well with limited training data
+* Suitable when accuracy is the primary objective
+
+**Classification accuracy:** approximately **81–82%**
 
 **Advantages:**
-- Strong feature representation
-- Faster convergence
-- Better generalization
+
+* Strong feature representation
+* Faster convergence during training
+* Better generalization performance
 
 ---
 
-**2. Self-Built CNN**
-- Trained end-to-end on the delivery pickup dataset
-- Lightweight and task-specific
-- Easier to modify and deploy
+#### Self-Built CNN
+
+The self-built CNN is trained end-to-end on the delivery pickup dataset, making it task-specific and computationally efficient.
 
 **Advantages:**
-- Lower computational cost
-- Faster training
-- Greater architectural flexibility
-- More suitable for embedded or edge deployment
+
+* Lower computational cost
+* Faster training time
+* Greater architectural flexibility
+* More suitable for embedded or edge deployment
 
 ---
 
 ### Summary
-Transfer learning provides superior performance when computational resources are
-available, while the self-built CNN offers a balanced solution for **real-time delivery
-systems** where efficiency and simplicity are critical.
 
+Transfer learning provides superior accuracy when computational resources are available, while the self-built CNN offers a balanced solution for **real-time delivery systems** where efficiency, simplicity, and deployability are critical.
 
+---
