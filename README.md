@@ -1,117 +1,139 @@
-# Package Image Classification for Automated Pickup Verification
+# Delivery Pickup Image Classification
 
-## Overview
-This project addresses **visual classification of robotic package pickup outcomes** using computer vision and machine learning.  
-Based on RGB images from the **ARMBench dataset**, the system classifies pickup attempts into success and failure categories, enabling automated verification for robotic manipulation and delivery systems.
+This project implements an **image-based classification system for automated delivery
+pickup scenarios**. Camera images captured during the pickup process are analyzed to
+determine whether the pickup is **successful**, **damaged**, or **incorrect**.
 
-The project compares a **deep learning transfer learning approach (ResNet-50)** with a **feature-based machine learning baseline (XGBoost)**, focusing on performance, robustness, and practical deployment considerations under limited data conditions.
-
----
-
-## Motivation
-In automated delivery and warehouse robotics, incorrect package pickup can result in:
-- Failed deliveries  
-- Package damage  
-- Increased operational cost  
-
-Visual verification using image classification provides a **low-cost perception layer** that can be integrated into robotic pipelines to detect pickup failures and improve system reliability.
+The system is designed to support delivery automation by detecting pickup failures
+such as **package damage** or **accidental multi-item pickup**.
 
 ---
 
-## Dataset: ARMBench
+## Objective
+To train and evaluate image classification models capable of identifying pickup
+conditions in delivery systems using camera images captured at the pickup stage.
+
+---
+
+## Classification Categories
+> Note: Some images in the dataset may be blurred due to motion or capture conditions.  
+> The example images shown below are randomly selected.
+> ## Dataset: ARMBench
 This project uses the **ARMBench dataset**, a benchmark dataset designed for evaluating robotic manipulation and pickup performance under realistic conditions.
 
-### Pickup Outcome Classes
 
-- **Normal Pickup** – a single, undamaged item is correctly picked  
+- **Normal Pickup** – a single, undamaged item is correctly picked
+  
+  ![Defective package example](example-image/normal.jpg)
+  
+- **Damaged Package** – visible damage on the package
+  
+  ![Defective package example](example-image/defect.jpg)
+  
+- **Multiple Items Picked** – more than one item is picked unintentionally
+  
+  ![Defective package example](example-image/multi-pick.jpg)
+  
+---
 
-  ![Normal pickup example](example-image/normal.jpg)
-
-- **Damaged Package** – visible damage on the package  
-
-  ![Damaged package example](example-image/defect.jpg)
-
-- **Multiple Items Picked** – more than one item is picked unintentionally  
-
-  ![Multiple pickup example](example-image/multi-pick.jpg)
-
-The dataset reflects real-world challenges such as clutter, partial occlusion, and subtle visual defects.
-
-> ⚠️ The full ARMBench dataset is not included in this repository due to size constraints.
+## Approach
+- Camera images are preprocessed and resized for model compatibility
+- Deep features are extracted using pretrained convolutional neural networks
+- Multiple models are evaluated, including:
+  - Transfer learning with pretrained CNN feature extraction
+  - XGBoost-based classifiers
+  - Custom convolutional neural networks
+- Models are compared based on classification accuracy and training efficiency
 
 ---
 
-## Methodology
+## Code Structure
+src/
 
-### Image Preprocessing
-- Image resizing and normalisation  
-- Dataset organisation for supervised learning  
-- Feature preparation for downstream models  
+├── main.m # Entry point for training and evaluation
 
----
+├── extractFeatures.m # CNN-based feature extraction
 
-### Models
+├── trainXGBoost.m # XGBoost classifier training
 
-Two complementary approaches were evaluated:
+├── trainCNN.m # Custom CNN training
 
-- **ResNet-50 (Transfer Learning)**  
-  A pretrained deep convolutional neural network fine-tuned for pickup outcome classification.
-  This model serves as the **primary model** due to its strong feature representation and robustness.
+├── evaluateModel.m # Model evaluation and metrics
 
-- **XGBoost Classifier**  
-  A feature-based machine learning baseline trained on CNN-extracted features,
-  providing a lightweight and interpretable comparison.
+└── utils/
 
----
+├── preprocessImage.m # Image preprocessing utilities
 
-## Evaluation
-Model performance was analysed using a **confusion matrix** to better understand class-level behaviour beyond overall accuracy.
+└── splitDataset.m # Dataset splitting
 
-<p align="center">
-  <img src="example-image/confusion_matrix_resnet50.png" width="450">
-</p>
+## How to Run
+1. Organize the dataset as follows:
 
-Key observations:
-- Most misclassifications occur between **Normal Pickup** and **Damaged Package**, where visual differences can be subtle.
-- **Multiple Items Picked** is classified more reliably due to stronger geometric and spatial cues.
-- Transfer learning with ResNet-50 demonstrates improved robustness compared to the feature-based XGBoost baseline.
+data/
+
+├── normal/
+
+├── damaged/
+
+└── multiple/
+
+3. Run `src/main.m`
 
 ---
 
-## Project Structure
-.
-├── example-image/ # Sample ARMBench images and confusion matrix
+## Model Architecture and Comparison
 
-├── src/ # Preprocessing, training, evaluation scripts
+### Self-Built CNN Structure
 
-├── README.md
+A lightweight custom convolutional neural network was designed and trained from scratch to match the delivery pickup classification task. The network adopts a simple and efficient architecture:
+
+* **Input layer:** RGB images resized to 224 × 224
+* **Convolutional layers:** ReLU activation for feature extraction
+* **Max pooling layers:** spatial downsampling
+* **Fully connected layer:** classification
+* **Softmax output layer:** multi-class prediction
+
+This architecture prioritizes **simplicity**, **faster training**, and a **reduced risk of overfitting** when working with a limited dataset.
+
+**Classification accuracy:** approximately **75–76%**
 
 ---
 
-## Results & Insights
-- Transfer learning is effective for ARMBench under limited data conditions  
-- Feature-based models offer efficiency but reduced expressiveness  
-- Error analysis highlights the importance of class-level evaluation in robotic perception tasks  
+### Model Comparison and Advantages
 
-These results demonstrate practical trade-offs between **model complexity, data availability, and deployment constraints**.
+#### Transfer Learning (Pretrained CNN + XGBoost)
+
+Pretrained convolutional neural networks are used to extract high-level visual features, which are then classified using an XGBoost-based model.
+
+* Achieves the **highest classification accuracy**
+* Performs well with limited training data
+* Suitable when accuracy is the primary objective
+
+**Classification accuracy:** approximately **81–82%**
+
+**Advantages:**
+
+* Strong feature representation
+* Faster convergence during training
+* Better generalization performance
 
 ---
 
-## Limitations
-- Limited dataset size  
-- No real-time inference pipeline  
-- MATLAB-centric implementation  
+#### Self-Built CNN
 
-These constraints reflect realistic conditions in early-stage robotic perception systems.
+The self-built CNN is trained end-to-end on the delivery pickup dataset, making it task-specific and computationally efficient.
 
+**Advantages:**
 
-## Technologies
-- MATLAB  
-- ARMBench Dataset  
-- ResNet-50 (Transfer Learning)  
-- XGBoost  
-- Image Classification & Feature Extraction  
+* Lower computational cost
+* Faster training time
+* Greater architectural flexibility
+* More suitable for embedded or edge deployment
 
+---
 
-## License
-This project is provided for **educational and research purposes**.
+### Summary
+
+Transfer learning provides superior accuracy when computational resources are available, while the self-built CNN offers a balanced solution for **real-time delivery systems** where efficiency, simplicity, and deployability are critical.
+
+---
